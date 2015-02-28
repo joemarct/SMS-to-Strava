@@ -46,8 +46,8 @@ def hello():
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
 						})
 					else:
-						resp.message("Your route will be available shortly! https://www.strava.com/athlete/routes")
-						return str(resp)
+						resp.message("Your route is ready! https://www.strava.com/athlete/routes")
+						
 						#add point_b
 						connection.connect()
 						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
@@ -119,6 +119,8 @@ def hello():
 							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
 						})
+
+						return str(resp)
 
 				else:
 					#add point_a
