@@ -40,6 +40,7 @@ def hello():
 					print "3"
 					if result["results"][0]["point_b"]:
 						print "yo. deleting"
+						connection.connect()
 						connection.request('DELETE', '/1/classes/Rider/%s' % result["results"][0]["objectId"], '', {
 							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
@@ -48,6 +49,7 @@ def hello():
 						resp.message("Your route will be available shortly! https://www.strava.com/athlete/routes")
 						return str(resp)
 						#add point_b
+						connection.connect()
 						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 							"point_b": body
 						}), {
@@ -56,6 +58,7 @@ def hello():
 							"Content-Type": "application/json"
 						})
 
+						connection.connect()
 						params = urllib.urlencode({"where":json.dumps({
 						       "objectId": result["results"][0]["objectId"]
 						     })})
@@ -119,6 +122,7 @@ def hello():
 
 				else:
 					#add point_a
+					connection.connect()
 					connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 						"point_a": body
 					}), {
@@ -129,6 +133,7 @@ def hello():
 					resp.message("What's your ending location?")
 			else:
 				# add their password
+				connection.connect()
 				connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 					"password": body
 				}), {
@@ -139,6 +144,7 @@ def hello():
 				resp.message("What's your starting location?")
 		else:
 			# add their email
+			connection.connect()
 			connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 				"email": body
 			}), {
@@ -149,6 +155,7 @@ def hello():
 			resp.message("What's your password?")
 	except:
 		#create a record
+		connection.connect()
 		connection.request('POST', '/1/classes/Rider', json.dumps({
 			"phone": from_number,
 			"email": '',
