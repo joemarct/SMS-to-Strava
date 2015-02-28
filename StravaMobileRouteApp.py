@@ -46,6 +46,8 @@ def hello():
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
 						})
 					else:
+						resp.message("Your route will be available shortly! https://www.strava.com/athlete/routes")
+						return str(resp)
 						#add point_b
 						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 							"point_b": body
@@ -54,7 +56,6 @@ def hello():
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
 							"Content-Type": "application/json"
 						})
-						resp.message("Making your route!")
 
 						display = Display(visible=0, size=(1440, 800))
 						display.start()
