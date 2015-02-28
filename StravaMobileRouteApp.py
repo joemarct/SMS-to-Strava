@@ -17,11 +17,10 @@ def hello():
 	print from_number
 	print body
 
-	connection = httplib.HTTPSConnection('api.parse.com', 443)
-
 	resp = twilio.twiml.Response()
 
 	try:
+		connection = httplib.HTTPSConnection('api.parse.com', 443)
 		params = urllib.urlencode({"where":json.dumps({
 		       "phone": from_number
 		     })})
@@ -56,6 +55,15 @@ def hello():
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
 							"Content-Type": "application/json"
 						})
+
+						params = urllib.urlencode({"where":json.dumps({
+						       "objectId": result["results"][0]["objectId"]
+						     })})
+						connection.request('GET', '/1/classes/Rider?%s' % params, '', {
+						       "X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+						       "X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
+						     })
+						result = json.loads(connection.getresponse().read())
 
 						display = Display(visible=0, size=(1440, 800))
 						display.start()
