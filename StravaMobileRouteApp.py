@@ -60,9 +60,11 @@ def hello():
 
 						time.sleep(1)
 
+						connection = httplib.HTTPSConnection('api.parse.com', 443)
 						params = urllib.urlencode({"where":json.dumps({
-						       "objectId": result["results"][0]["objectId"]
+						       "phone": from_number
 						     })})
+						connection.connect()
 						connection.request('GET', '/1/classes/Rider?%s' % params, '', {
 						       "X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
 						       "X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
