@@ -90,6 +90,19 @@ def hello():
 						display.start()
 						browser = webdriver.Firefox()
 
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "2Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
+
 						#log in
 						browser.get('http://www.strava.com/routes/new')
 						time.sleep(1)
@@ -101,6 +114,19 @@ def hello():
 						loginButton.click()
 						time.sleep(3)
 
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "3Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
+
 						#input first location
 						locationField = browser.find_element_by_css_selector('.input-lg')
 						locationField.send_keys(result["results"][0]["point_a"])
@@ -110,6 +136,19 @@ def hello():
 						canvas = browser.find_element_by_xpath('//*[@id="map-canvas"]/div/div[1]/div[2]')
 						canvas.click()
 						time.sleep(3)
+
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "4Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
 
 						#input second location
 						locationField.clear()
@@ -121,6 +160,19 @@ def hello():
 						canvas.click()
 						time.sleep(3)
 
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "5Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
+
 						#save and name route
 						saveButton = browser.find_element_by_css_selector('.save-route')
 						saveButton.click()
@@ -128,6 +180,19 @@ def hello():
 						routeName.send_keys(result["results"][0]["point_a"] + " to " + result["results"][0]["point_b"])
 						submitButton = browser.find_element_by_css_selector('.submit')
 						submitButton.click()
+
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "6Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
 
 						browser.quit()
 
