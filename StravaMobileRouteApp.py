@@ -48,13 +48,31 @@ def hello():
 					else:
 						resp.message("Your route is ready! https://www.strava.com/athlete/routes")
 						
-						riderId = result["results"][0]["objectId"]
-						riderPoint_B = body 
-
 						#add point_b
 						connection.connect()
 						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 							"point_b": body
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
+
+						time.sleep(1)
+
+						params = urllib.urlencode({"where":json.dumps({
+						       "objectId": result["results"][0]["objectId"]
+						     })})
+						connection.request('GET', '/1/classes/Rider?%s' % params, '', {
+						       "X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+						       "X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
+						     })
+						result = json.loads(connection.getresponse().read())
+
+						time.sleep(1)
+
+						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
+							"point_b": "nachos"
 						}), {
 							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
@@ -69,16 +87,16 @@ def hello():
 						browser.get('http://www.strava.com/routes/new')
 						time.sleep(1)
 						email = browser.find_element_by_name("email")
-						email.send_keys(riderEmail)
+						email.send_keys(result["results"][0]["email"])
 						password = browser.find_element_by_name("password")
-						password.send_keys(riderPassword)
+						password.send_keys(result["results"][0]["password"])
 						loginButton = browser.find_element_by_id('login-button')
 						loginButton.click()
 						time.sleep(3)
 
 						#input first location
 						locationField = browser.find_element_by_css_selector('.input-lg')
-						locationField.send_keys(riderPoint_A)
+						locationField.send_keys(result["results"][0]["point_a"])
 						locationFieldButton = browser.find_element_by_css_selector('.icon')
 						locationFieldButton.click()
 						time.sleep(3)
@@ -88,7 +106,7 @@ def hello():
 
 						#input second location
 						locationField.clear()
-						locationField.send_keys(riderPoint_B)
+						locationField.send_keys(result["results"][0]["point_b"])
 						locationFieldButton = browser.find_element_by_css_selector('.icon')
 						locationFieldButton.click()
 						time.sleep(3)
@@ -118,7 +136,6 @@ def hello():
 				else:
 					#add point_a
 					connection.connect()
-					riderPoint_A = body
 					connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 						"point_a": body
 					}), {
@@ -129,7 +146,6 @@ def hello():
 					resp.message("What's your ending location?")
 			else:
 				# add their password
-				riderPassword = body
 				connection.connect()
 				connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 					"password": body
@@ -141,7 +157,6 @@ def hello():
 				resp.message("What's your starting location?")
 		else:
 			# add their email
-			riderEmail = body
 			connection.connect()
 			connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
 				"email": body
