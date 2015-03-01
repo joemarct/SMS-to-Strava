@@ -1,7 +1,11 @@
-from flask import Flask, request, redirect
+# How this works
+# 1) SMS Strava login + route points via Twilio (+1.267.578.7282)
+# 2) Save SMS data to Parse
+# 3) Create Strava route with Selenium 
+
+from flask import Flask, request
 import twilio.twiml
 import json,httplib,urllib
-from splinter import Browser 
 import time
 from pyvirtualdisplay import Display
 from selenium import webdriver
@@ -13,9 +17,6 @@ def hello():
 
 	from_number = request.values.get('From')
 	body = request.values.get('Body')
-
-	print from_number
-	print body
 
 	resp = twilio.twiml.Response()
 
@@ -33,13 +34,9 @@ def hello():
 		print result
 
 		if result["results"][0]["email"]:
-			print "1"
 			if result["results"][0]["password"]:
-				print "2"
 				if result["results"][0]["point_a"]:
-					print "3"
 					if result["results"][0]["point_b"]:
-						print "yo. deleting"
 						connection.connect()
 						connection.request('DELETE', '/1/classes/Rider/%s' % result["results"][0]["objectId"], '', {
 							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
@@ -58,11 +55,10 @@ def hello():
 							"Content-Type": "application/json"
 						})
 
-						time.sleep(1)
-
+						# get data for route
 						connection = httplib.HTTPSConnection('api.parse.com', 443)
 						params = urllib.urlencode({"where":json.dumps({
-						       "phone": from_number
+						       "objectId": result["results"][0]["objectId"]
 						     })})
 						connection.connect()
 						connection.request('GET', '/1/classes/Rider?%s' % params, '', {
@@ -71,37 +67,12 @@ def hello():
 						     })
 						result = json.loads(connection.getresponse().read())
 
-						time.sleep(1)
-
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "1800Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
-
+						# launch browser
+						# if selenium has firefox problems see this Stack Overflow question
+						# http://stackoverflow.com/questions/6682009/selenium-firefoxprofile-exception-cant-load-the-profile/25645344#25645344
 						display = Display(visible=0, size=(1440, 800))
 						display.start()
 						browser = webdriver.Firefox()
-
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "2Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
 
 						#log in
 						browser.get('http://www.strava.com/routes/new')
@@ -114,19 +85,6 @@ def hello():
 						loginButton.click()
 						time.sleep(3)
 
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "3Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
-
 						#input first location
 						locationField = browser.find_element_by_css_selector('.input-lg')
 						locationField.send_keys(result["results"][0]["point_a"])
@@ -136,19 +94,6 @@ def hello():
 						canvas = browser.find_element_by_xpath('//*[@id="map-canvas"]/div/div[1]/div[2]')
 						canvas.click()
 						time.sleep(3)
-
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "4Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
 
 						#input second location
 						locationField.clear()
@@ -160,19 +105,6 @@ def hello():
 						canvas.click()
 						time.sleep(3)
 
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "5Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
-
 						#save and name route
 						saveButton = browser.find_element_by_css_selector('.save-route')
 						saveButton.click()
@@ -180,19 +112,6 @@ def hello():
 						routeName.send_keys(result["results"][0]["point_a"] + " to " + result["results"][0]["point_b"])
 						submitButton = browser.find_element_by_css_selector('.submit')
 						submitButton.click()
-
-						connection.connect()
-						connection.request('POST', '/1/classes/Rider', json.dumps({
-							"phone": "6Pizza",
-							"password": result["results"][0]["password"],
-							"email": result["results"][0]["email"],
-							"point_a": result["results"][0]["point_a"],
-							"point_b": result["results"][0]["point_a"]
-						}), {
-							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
-							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
-							"Content-Type": "application/json"
-						})
 
 						browser.quit()
 
