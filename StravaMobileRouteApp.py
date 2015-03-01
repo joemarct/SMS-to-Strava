@@ -58,7 +58,6 @@ def hello():
 							"Content-Type": "application/json"
 						})
 
-						connection.connect()
 						params = urllib.urlencode({"where":json.dumps({
 						       "objectId": result["results"][0]["objectId"]
 						     })})
@@ -67,6 +66,14 @@ def hello():
 						       "X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq"
 						     })
 						result = json.loads(connection.getresponse().read())
+
+						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
+							"point_b": "nachos"
+						}), {
+							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
+							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
+							"Content-Type": "application/json"
+						})
 
 						display = Display(visible=0, size=(1440, 800))
 						display.start()
