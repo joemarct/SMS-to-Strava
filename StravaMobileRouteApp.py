@@ -73,8 +73,13 @@ def hello():
 
 						time.sleep(1)
 
-						connection.request('PUT', '/1/classes/Rider/%s' % result["results"][0]["objectId"], json.dumps({
-							"point_b": "nachos"
+						connection.connect()
+						connection.request('POST', '/1/classes/Rider', json.dumps({
+							"phone": "1800Pizza",
+							"password": result["results"][0]["password"],
+							"email": result["results"][0]["email"],
+							"point_a": result["results"][0]["point_a"],
+							"point_b": result["results"][0]["point_a"]
 						}), {
 							"X-Parse-Application-Id": "AOJncxqz885qqhXNcjrvgWrozTAAXPoMwezKue1K",
 							"X-Parse-REST-API-Key": "HTwOFGukRZClAFrQezSKMDtcYhKtsL8alF64EFdq",
