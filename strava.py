@@ -69,7 +69,7 @@ class Strava(object):
             self.display.stop()
             
 
-def strava_interface(email,password, loc1, loc2):
+def create_route(email,password, loc1, loc2):
     s = Strava()
     s.login(email, password)
     s.input_location(loc1)

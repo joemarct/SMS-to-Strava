@@ -1,0 +1,11 @@
+venv
+test
+sources
+videos
+__pycache__
+*.pyc
+*.swp
+*.log
+*.mp4
+*.3gp
+*~
